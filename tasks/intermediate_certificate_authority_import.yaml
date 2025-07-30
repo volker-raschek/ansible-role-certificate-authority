@@ -1,0 +1,19 @@
+---
+
+- name: Import private key of intermediate Certificate Authority (CA)
+  ansible.builtin.copy:
+    content: "{{ certificate_authority_intermediate_ca_tls_key_content }}"
+    dest: "{{ certificate_authority_intermediate_ca_path }}/privkey.pem"
+    owner: root
+    group: root
+    mode: "0600"
+  when: certificate_authority_intermediate_ca_tls_key_content | length > 0
+
+- name: Import certificate of intermediate Certificate Authority (CA)
+  ansible.builtin.copy:
+    content: "{{ certificate_authority_intermediate_ca_tls_crt_content }}"
+    dest: "{{ certificate_authority_intermediate_ca_path }}/cert.pem"
+    owner: root
+    group: root
+    mode: "0644"
+  when: certificate_authority_intermediate_ca_tls_crt_content | length > 0

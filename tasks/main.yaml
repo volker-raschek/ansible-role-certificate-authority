@@ -1,0 +1,26 @@
+---
+
+- name: Upgrade python package manager pip
+  ansible.builtin.pip:
+    name: pip
+    state: latest
+
+- name: Install required python library cryptography
+  ansible.builtin.pip:
+    name: cryptography>=1.2.3
+    state: present
+
+- name: Create or import a root Certificate Authority (CA)
+  ansible.builtin.include_tasks: root_certificate_authority.yaml
+  when: certificate_authority_root_ca_skip is defined and
+        not certificate_authority_root_ca_skip
+
+- name: Create or import a intermediate Certificate Authority (CA)
+  ansible.builtin.include_tasks: intermediate_certificate_authority.yaml
+  when: certificate_authority_intermediate_ca_skip is defined and
+        not certificate_authority_intermediate_ca_skip
+
+- name: Create or import a client certificate
+  ansible.builtin.include_tasks: client_certificate.yaml
+  when: certificate_authority_client_skip is defined and
+        not certificate_authority_client_skip

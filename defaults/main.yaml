@@ -1,0 +1,86 @@
+---
+
+## @section Root Certificate Authority (CA)
+## @param certificate_authority_root_ca_skip Skip creation or import of a root certificate authority in general.
+## @param certificate_authority_root_ca_create Create root certificate from scratch or import via `certificate_authority_root_ca_tls` prefixed variables.
+## @param certificate_authority_root_ca_import Import the TLS certificate of the root certificate authority into the systems trust store.
+certificate_authority_root_ca_skip: false
+certificate_authority_root_ca_create: true
+certificate_authority_root_ca_import: true
+
+## @param certificate_authority_root_ca_path Directory where the private and public TLS key of the root certificate authority should be stored.
+## @param certificate_authority_root_ca_common_name Common Name (CN) of the root certificate authority.
+## @param certificate_authority_root_ca_subject_alternative_names Subject Alternative Names (SAN) of the root certificate authority.
+## @param certificate_authority_root_ca_not_after Time in the future from now when the TLS certificate should expire
+## @param certificate_authority_root_ca_not_before Time in the past from now when the TLS certificate should be valid.
+certificate_authority_root_ca_path: "/etc/ansible-playbook/pki/ca"
+certificate_authority_root_ca_common_name: "Ansible Root CA"
+certificate_authority_root_ca_subject_alternative_names: []
+certificate_authority_root_ca_not_after: "+3650d"
+certificate_authority_root_ca_not_before: "+0s"
+
+## @param certificate_authority_root_ca_tls_key_content Content of a custom used root certificate authority. Will only be imported, when `certificate_authority_root_ca_create: false`.
+## @param certificate_authority_root_ca_tls_crt_content Content of a custom used certificate of the certificate authority. Will only be imported, when `certificate_authority_root_ca_create: false`.
+certificate_authority_root_ca_tls_key_content: ""
+certificate_authority_root_ca_tls_crt_content: ""
+
+## @param certificate_authority_root_ca_tls_key_passphrase Passphrase for the private key of the generated or imported root certificate authority.
+## @param certificate_authority_root_ca_tls_key_type Algorithm of the private key of the root certificate authority.
+certificate_authority_root_ca_tls_key_passphrase: ""
+certificate_authority_root_ca_tls_key_type: "RSA"
+
+
+## @section Intermediate Certificate Authority (CA)
+## @param certificate_authority_intermediate_ca_skip Skip creation or import of a intermediate certificate authority in general.
+## @param certificate_authority_intermediate_ca_create Create intermediate certificate from scratch or import via `certificate_authority_intermediate_ca_tls` prefixed variables.
+certificate_authority_intermediate_ca_skip: false
+certificate_authority_intermediate_ca_create: true
+
+## @param certificate_authority_intermediate_ca_path Directory where the private and public TLS key of the intermediate certificate authority should be stored.
+## @param certificate_authority_intermediate_ca_common_name Common Name (CN) of the intermediate certificate authority.
+## @param certificate_authority_intermediate_ca_subject_alternative_names Subject Alternative Names (SAN) of the intermediate certificate authority.
+## @param certificate_authority_intermediate_ca_not_after Time in the future from now when the TLS certificate should expire
+## @param certificate_authority_intermediate_ca_not_before Time in the past from now when the TLS certificate should be valid.
+certificate_authority_intermediate_ca_path: "/etc/ansible-playbook/pki/intermediate"
+certificate_authority_intermediate_ca_common_name: "Ansible Intermediate CA"
+certificate_authority_intermediate_ca_subject_alternative_names: []
+certificate_authority_intermediate_ca_not_after: "+1825d"
+certificate_authority_intermediate_ca_not_before: "+0s"
+
+## @param certificate_authority_intermediate_ca_tls_key_content Content of a custom used intermediate certificate authority. Will only be imported, when `certificate_authority_intermediate_ca_create: false`.
+## @param certificate_authority_intermediate_ca_tls_crt_content Content of a custom used certificate of the certificate authority. Will only be imported, when `certificate_authority_intermediate_ca_create: false`.
+certificate_authority_intermediate_ca_tls_key_content: ""
+certificate_authority_intermediate_ca_tls_crt_content: ""
+
+## @param certificate_authority_intermediate_ca_tls_key_passphrase Passphrase for the private key of the generated or imported intermediate certificate authority.
+## @param certificate_authority_intermediate_ca_tls_key_type Algorithm of the private key of the intermediate certificate authority.
+certificate_authority_intermediate_ca_tls_key_passphrase: ""
+certificate_authority_intermediate_ca_tls_key_type: "RSA"
+
+
+## @section Client Certificate
+## @param certificate_authority_client_skip Skip creation or import of a client certificate in general.
+## @param certificate_authority_client_create Create client certificate from scratch or import via `certificate_authority_client_tls` prefixed variables.
+certificate_authority_client_skip: true
+certificate_authority_client_create: true
+
+## @param certificate_authority_client_path Directory where the private and public TLS key of the client certificate authority should be stored.
+## @param certificate_authority_client_common_name Common Name (CN) of the client certificate.
+## @param certificate_authority_client_subject_alternative_names Subject Alternative Names (SAN) of the client certificate.
+## @param certificate_authority_client_not_after Time in the future from now when the TLS certificate should expire
+## @param certificate_authority_client_not_before Time in the past from now when the TLS certificate should be valid.
+certificate_authority_client_path: "/etc/ansible-playbook/pki/client"
+certificate_authority_client_common_name: "Ansible Client Certificate"
+certificate_authority_client_subject_alternative_names: []
+certificate_authority_client_not_after: "+397d"
+certificate_authority_client_not_before: "+0s"
+
+## @param certificate_authority_client_tls_key_passphrase Passphrase for the private key of the generated or imported client certificate.
+## @param certificate_authority_client_tls_key_type Algorithm of the private key of the client certificate.
+certificate_authority_client_tls_key_passphrase: ""
+certificate_authority_client_tls_key_type: "RSA"
+
+## @param certificate_authority_client_tls_crt_content Passphrase for the private key of the generated or imported client certificate.
+## @param certificate_authority_client_tls_key_content Algorithm of the private key of the client certificate
+certificate_authority_client_tls_crt_content: ""
+certificate_authority_client_tls_key_content: ""

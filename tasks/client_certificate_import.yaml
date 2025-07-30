@@ -1,0 +1,19 @@
+---
+
+- name: Import private key of a client
+  ansible.builtin.copy:
+    content: "{{ certificate_authority_client_tls_key_content }}"
+    dest: "{{ certificate_authority_client_ca_path }}/privkey.pem"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  when: certificate_authority_client_tls_key_content | length > 0
+
+- name: Import certificate of a client
+  ansible.builtin.copy:
+    content: "{{ certificate_authority_client_tls_crt_content }}"
+    dest: "{{ certificate_authority_client_tls_crt_content }}/cert.pem"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: certificate_authority_client_tls_crt_content | length > 0

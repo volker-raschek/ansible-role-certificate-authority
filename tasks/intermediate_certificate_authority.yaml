@@ -1,0 +1,112 @@
+---
+
+- name: Create directory to store tls keys and certificates of the intermediate CA
+  ansible.builtin.file:
+    path: "{{ certificate_authority_intermediate_ca_path }}"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+    state: "directory"
+
+- name: Create unprotected intermediate Certificate Authority (CA)
+  ansible.builtin.include_tasks: intermediate_certificate_authority_unprotected.yaml
+  when: certificate_authority_intermediate_ca_create is defined and
+        certificate_authority_intermediate_ca_create and
+        certificate_authority_intermediate_ca_tls_key_passphrase is defined and
+        certificate_authority_intermediate_ca_tls_key_passphrase | length <= 0
+
+- name: Create passphrase protected intermediate Certificate Authority (CA)
+  ansible.builtin.include_tasks: intermediate_certificate_authority_unprotected.yaml
+  when: certificate_authority_intermediate_ca_create is defined and
+        certificate_authority_intermediate_ca_create and
+        certificate_authority_intermediate_ca_tls_key_passphrase is defined and
+        certificate_authority_intermediate_ca_tls_key_passphrase | length > 0
+
+- name: Import intermediate Certificate Authority (CA)
+  ansible.builtin.include_tasks: intermediate_certificate_authority_import.yaml
+  when: certificate_authority_intermediate_ca_create is defined and
+        not certificate_authority_intermediate_ca_create
+
+- name: Create certificate chain file
+  block:
+  - name: Check if root certificate exists
+    ansible.builtin.stat:
+      path: "{{ certificate_authority_root_ca_path }}/cert.pem"
+    register: _stat_result
+  - name: Concatenate intermediate certificate and root certificate
+    vars:
+      _chain_files:
+      - "{{ certificate_authority_intermediate_ca_path }}/cert.pem"
+      - "{{ certificate_authority_root_ca_path }}/cert.pem"
+    ansible.builtin.command:
+      cmd: awk 1 {{ _chain_files | join(' ') }}
+    register: chain_content
+    changed_when: chain_content.rc == 0
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
+  - name: Create concatenated chain file
+    ansible.builtin.copy:
+      content: "{{ chain_content.stdout_lines | join('\n') }}"
+      dest: "{{ certificate_authority_intermediate_ca_path }}/chain.pem"
+      owner: "root"
+      group: "root"
+      mode: "0644"
+      remote_src: true
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
+
+- name: Create certificate fullchain file
+  block:
+  - name: Check if root chain exists
+    ansible.builtin.stat:
+      path: "{{ certificate_authority_root_ca_path }}/chain.pem"
+    register: _stat_result
+  - name: Concatenate intermediate certificate and root chain file
+    vars:
+      _chain_files:
+      - "{{ certificate_authority_intermediate_ca_path }}/cert.pem"
+      - "{{ certificate_authority_root_ca_path }}/chain.pem"
+    ansible.builtin.command:
+      cmd: awk 1 {{ _chain_files | join(' ') }}
+    register: chain_content
+    changed_when: chain_content.rc == 0
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
+  - name: Create concatenated fullchain file
+    ansible.builtin.copy:
+      content: "{{ chain_content.stdout_lines | join('\n') }}"
+      dest: "{{ certificate_authority_intermediate_ca_path }}/fullchain.pem"
+      owner: "root"
+      group: "root"
+      mode: "0644"
+      remote_src: true
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
+
+- name: Create file with private key and fullchain file of intermediate Certificate Authority (CA)
+  block:
+  - name: Check if private key exists
+    ansible.builtin.stat:
+      path: "{{ certificate_authority_intermediate_ca_path }}/privkey.pem"
+    register: _stat_result
+  - name: Concatenate private key and fullchain file of intermediate Certificate Authority (CA)
+    vars:
+      _chain_files:
+      - "{{ certificate_authority_intermediate_ca_path }}/privkey.pem"
+      - "{{ certificate_authority_intermediate_ca_path }}/fullchain.pem"
+    ansible.builtin.command:
+      cmd: awk 1 {{ _chain_files | join(' ') }}
+    register: chain_content
+    changed_when: chain_content.rc == 0
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
+  - name: Create concatenated file
+    ansible.builtin.copy:
+      content: "{{ chain_content.stdout_lines | join('\n') }}"
+      dest: "{{ certificate_authority_intermediate_ca_path }}/all.pem"
+      owner: "root"
+      group: "root"
+      mode: "0600"
+      remote_src: true
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists

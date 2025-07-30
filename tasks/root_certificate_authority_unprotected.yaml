@@ -1,0 +1,24 @@
+---
+
+- name: Create private key for root CA
+  community.crypto.openssl_privatekey:
+    path: "{{ certificate_authority_root_ca_path }}/privkey.pem"
+    type: "{{ certificate_authority_root_ca_tls_key_type }}"
+
+- name: Create a certificate signing request (CSR) for root CA
+  community.crypto.openssl_csr:
+    basic_constraints:
+    - "CA:TRUE"
+    common_name: "{{ certificate_authority_root_ca_common_name }}"
+    path: "{{ certificate_authority_root_ca_path }}/cert-req.pem"
+    privatekey_path: "{{ certificate_authority_root_ca_path }}/privkey.pem"
+    use_common_name_for_san: false
+
+- name: Create self-signed certificate for root CA
+  community.crypto.x509_certificate:
+    csr_path: "{{ certificate_authority_root_ca_path }}/cert-req.pem"
+    path: "{{ certificate_authority_root_ca_path }}/cert.pem"
+    privatekey_path: "{{ certificate_authority_root_ca_path }}/privkey.pem"
+    provider: selfsigned
+    selfsigned_not_after: "{{ certificate_authority_root_ca_not_after }}"
+    selfsigned_not_before: "{{ certificate_authority_root_ca_not_before }}"

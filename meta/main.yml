@@ -1,0 +1,25 @@
+galaxy_info:
+  namespace: volker-raschek
+  role_name: "certificate_authority"
+  author: "Markus Pesch"
+  description: "Role to create and managed an existing PKI infrastructure"
+  company: "Cryptic Systems"
+  license: "MIT"
+  min_ansible_version: "2.9"
+  platforms:
+  - name: ArchLinux
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Fedora
+    versions:
+    - "35"
+  galaxy_tags:
+  - certificate-authority
+  - ca
+  - ssl
+  - tls
+
+dependencies: []

@@ -1,0 +1,84 @@
+---
+
+- name: Create directory to store tls keys and certificates of the root CA
+  ansible.builtin.file:
+    path: "{{ certificate_authority_root_ca_path }}"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+    state: "directory"
+
+- name: Create unprotected root Certificate Authority (CA)
+  ansible.builtin.include_tasks: root_certificate_authority_unprotected.yaml
+  when: certificate_authority_root_ca_create is defined and
+        certificate_authority_root_ca_create and
+        certificate_authority_root_ca_tls_key_passphrase is defined and
+        certificate_authority_root_ca_tls_key_passphrase | length <= 0
+
+- name: Create passphrase protected root Certificate Authority (CA)
+  ansible.builtin.include_tasks: root_certificate_authority_unprotected.yaml
+  when: certificate_authority_root_ca_create is defined and
+        certificate_authority_root_ca_create and
+        certificate_authority_root_ca_tls_key_passphrase is defined and
+        certificate_authority_root_ca_tls_key_passphrase | length > 0
+
+- name: Import protected root Certificate Authority (CA)
+  ansible.builtin.include_tasks: root_certificate_authority_import.yaml
+  when: certificate_authority_root_ca_create is defined and
+        not certificate_authority_root_ca_create
+
+- name: Create symbolic link for signed root certificate
+  ansible.builtin.file:
+    src: "{{ certificate_authority_root_ca_path }}/cert.pem"
+    dest: "{{ certificate_authority_root_ca_path }}/{{ item }}"
+    state: link
+  with_items:
+  - ca.pem
+  - chain.pem
+  - fullchain.pem
+
+- name: Create file with private key and fullchain file of root Certificate Authority (CA)
+  block:
+  - name: Check if private key exists
+    ansible.builtin.stat:
+      path: "{{ certificate_authority_root_ca_path }}/privkey.pem"
+    register: _stat_result
+  - name: Concatenate private key and fullchain file of root Certificate Authority (CA)
+    vars:
+      _chain_files:
+      - "{{ certificate_authority_root_ca_path }}/privkey.pem"
+      - "{{ certificate_authority_root_ca_path }}/fullchain.pem"
+    ansible.builtin.command:
+      cmd: awk 1 {{ _chain_files | join(' ') }}
+    register: chain_content
+    changed_when: chain_content.rc == 0
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
+  - name: Create concatenated file
+    ansible.builtin.copy:
+      content: "{{ chain_content.stdout_lines | join('\n') }}"
+      dest: "{{ certificate_authority_root_ca_path }}/all.pem"
+      owner: "root"
+      group: "root"
+      mode: "0600"
+      remote_src: true
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
+
+- name: Import certificate of root Certificate Authority (CA) into systems trust store
+  when: certificate_authority_root_ca_import is defined and
+        certificate_authority_root_ca_import
+  block:
+  - name: Create symolic link
+    ansible.builtin.file:
+      src: "{{ certificate_authority_root_ca_path }}/cert.pem"
+      dest: "/etc/pki/ca-trust/source/anchors/{{ certificate_authority_root_ca_common_name | replace(' ', '_') }}.pem"
+      owner: root
+      group: root
+      state: link
+  - name: Update systems SSL/TLS trust store
+    ansible.builtin.command:
+      cmd: /usr/bin/update-ca-trust
+    register: _update_ca_trust
+    changed_when: _update_ca_trust.rc == 0
+    failed_when: _update_ca_trust.rc > 0

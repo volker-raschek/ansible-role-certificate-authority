@@ -1,0 +1,112 @@
+---
+
+- name: Create directory to store tls keys and certificates of the client
+  ansible.builtin.file:
+    path: "{{ certificate_authority_client_path }}"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+    state: directory
+
+- name: Create unprotected client certificate
+  ansible.builtin.include_tasks: client_certificate_unprotected.yaml
+  when: certificate_authority_client_create is defined and
+        certificate_authority_client_create and
+        certificate_authority_client_tls_key_passphrase is defined and
+        certificate_authority_client_tls_key_passphrase | length <= 0
+
+- name: Create passphrase protected client certificate
+  ansible.builtin.include_tasks: client_certificate_unprotected.yaml
+  when: certificate_authority_client_create is defined and
+        certificate_authority_client_create and
+        certificate_authority_client_tls_key_passphrase is defined and
+        certificate_authority_client_tls_key_passphrase | length > 0
+
+- name: Import client certificate
+  ansible.builtin.include_tasks: client_certificate_import.yaml
+  when: certificate_authority_client_create is defined and
+        not certificate_authority_client_create
+
+- name: Create certificate chain file
+  block:
+  - name: Check if intermediate certificate exists
+    ansible.builtin.stat:
+      path: "{{ certificate_authority_intermediate_ca_path }}/cert.pem"
+    register: _stat_result
+  - name: Concatenate client certificate and intermediate certificate
+    vars:
+      _chain_files:
+      - "{{ certificate_authority_client_path }}/cert.pem"
+      - "{{ certificate_authority_intermediate_ca_path }}/cert.pem"
+    ansible.builtin.command:
+      cmd: awk 1 {{ _chain_files | join(' ') }}
+    register: chain_content
+    changed_when: chain_content.rc == 0
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
+  - name: Create concatenated chain file
+    ansible.builtin.copy:
+      content: "{{ chain_content.stdout_lines | join('\n') }}"
+      dest: "{{ certificate_authority_client_path }}/chain.pem"
+      owner: "root"
+      group: "root"
+      mode: "0644"
+      remote_src: true
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
+
+- name: Create certificate fullchain file
+  block:
+  - name: Check if intermediate chain exists
+    ansible.builtin.stat:
+      path: "{{ certificate_authority_intermediate_ca_path }}/chain.pem"
+    register: _stat_result
+  - name: Concatenate client certificate and intermediate chain file
+    vars:
+      _chain_files:
+      - "{{ certificate_authority_client_path }}/cert.pem"
+      - "{{ certificate_authority_intermediate_ca_path }}/chain.pem"
+    ansible.builtin.command:
+      cmd: awk 1 {{ _chain_files | join(' ') }}
+    register: chain_content
+    changed_when: chain_content.rc == 0
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
+  - name: Create concatenated fullchain file
+    ansible.builtin.copy:
+      content: "{{ chain_content.stdout_lines | join('\n') }}"
+      dest: "{{ certificate_authority_client_path }}/fullchain.pem"
+      owner: "root"
+      group: "root"
+      mode: "0644"
+      remote_src: true
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
+
+- name: Create file with private key and fullchain file of the client
+  block:
+  - name: Check if fullchain exists
+    ansible.builtin.stat:
+      path: "{{ certificate_authority_client_path }}/fullchain.pem"
+    register: _stat_result
+  - name: Concatenate private key and fullchain file of the client
+    vars:
+      _chain_files:
+      - "{{ certificate_authority_client_path }}/privkey.pem"
+      - "{{ certificate_authority_client_path }}/fullchain.pem"
+    ansible.builtin.command:
+      cmd: awk 1 {{ _chain_files | join(' ') }}
+    register: chain_content
+    changed_when: chain_content.rc == 0
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
+  - name: Create concatenated file
+    ansible.builtin.copy:
+      content: "{{ chain_content.stdout_lines | join('\n') }}"
+      dest: "{{ certificate_authority_client_path }}/all.pem"
+      owner: "root"
+      group: "root"
+      mode: "0600"
+      remote_src: true
+    when: _stat_result.stat.exists is defined and
+          _stat_result.stat.exists
