@@ -14,6 +14,7 @@
     common_name: "{{ certificate_authority_root_ca_common_name }}"
     path: "{{ certificate_authority_root_ca_path }}/cert-req.pem"
     privatekey_path: "{{ certificate_authority_root_ca_path }}/privkey.pem"
+    privatekey_passphrase: "{{ certificate_authority_root_ca_tls_key_passphrase }}"
     use_common_name_for_san: false
 
 - name: Create self-signed certificate for root CA
