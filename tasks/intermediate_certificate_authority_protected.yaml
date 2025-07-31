@@ -20,7 +20,6 @@
     privatekey_passphrase: "{{ certificate_authority_intermediate_ca_tls_key_passphrase }}"
     privatekey_path: "{{ certificate_authority_intermediate_ca_path }}/privkey.pem"
     state_or_province_name: "{{ certificate_authority_intermediate_ca_state_or_province_name }}"
-    state: "{{ certificate_authority_intermediate_ca_state }}"
     use_common_name_for_san: false
 
 - name: Create signed client certificate - unprotected root Certificate Authority (CA)

@@ -10,12 +10,11 @@ certificate_authority_root_ca_import: true
 
 ## @param certificate_authority_root_ca_path Directory where the private and public TLS key of the root certificate authority should be stored.
 ## @param certificate_authority_root_ca_common_name Common Name (CN) of the root certificate authority.
-## @param certificate_authority_root_ca_country_name Common Name (CN) of the root certificate authority.
+## @param certificate_authority_root_ca_country_name Common Name (CN) of the root certificate authority. For example `US`, `FR` or `DE`.
 ## @param certificate_authority_root_ca_email_address E-Mail Address of the root certificate authority owner.
 ## @param certificate_authority_root_ca_organization_name Organization name of the root certificate authority owner.
 ## @param certificate_authority_root_ca_organizational_unit_name Organizational unit name of the root certificate authority.
 ## @param certificate_authority_root_ca_state_or_province_name State or province name where the owner of the root certificate authority is located.
-## @param certificate_authority_root_ca_state State where the owner of the root certificate authority is located
 ## @param certificate_authority_root_ca_subject_alternative_names Subject Alternative Names (SAN) of the root certificate authority.
 ## @param certificate_authority_root_ca_not_after Time in the future from now when the TLS certificate should expire
 ## @param certificate_authority_root_ca_not_before Time in the past from now when the TLS certificate should be valid.
@@ -26,7 +25,6 @@ certificate_authority_root_ca_email_address: ""
 certificate_authority_root_ca_organization_name: ""
 certificate_authority_root_ca_organizational_unit_name: ""
 certificate_authority_root_ca_state_or_province_name: ""
-certificate_authority_root_ca_state: ""
 certificate_authority_root_ca_subject_alternative_names: []
 certificate_authority_root_ca_not_after: "+3650d"
 certificate_authority_root_ca_not_before: "+0s"
@@ -50,12 +48,11 @@ certificate_authority_intermediate_ca_create: true
 
 ## @param certificate_authority_intermediate_ca_path Directory where the private and public TLS key of the intermediate certificate authority should be stored.
 ## @param certificate_authority_intermediate_ca_common_name Common Name (CN) of the intermediate certificate authority.
-## @param certificate_authority_intermediate_ca_country_name Country name of the intermediate certificate authority.
+## @param certificate_authority_intermediate_ca_country_name Country name of the intermediate certificate authority. For example `US`, `FR` or `DE`.
 ## @param certificate_authority_intermediate_ca_email_address E-Mail Address of the intermediate certificate authority owner.
 ## @param certificate_authority_intermediate_ca_organization_name Organization name of the intermediate certificate authority owner.
 ## @param certificate_authority_intermediate_ca_organizational_unit_name Organizational unit name of the intermediate certificate authority.
 ## @param certificate_authority_intermediate_ca_state_or_province_name State or province name where the owner of the intermediate certificate authority is located.
-## @param certificate_authority_intermediate_ca_state State where the owner of the intermediate certificate authority is located.
 ## @param certificate_authority_intermediate_ca_subject_alternative_names Subject Alternative Names (SAN) of the intermediate certificate authority.
 ## @param certificate_authority_intermediate_ca_not_after Time in the future from now when the TLS certificate should expire
 ## @param certificate_authority_intermediate_ca_not_before Time in the past from now when the TLS certificate should be valid.
@@ -66,7 +63,6 @@ certificate_authority_intermediate_ca_email_address: ""
 certificate_authority_intermediate_ca_organization_name: ""
 certificate_authority_intermediate_ca_organizational_unit_name: ""
 certificate_authority_intermediate_ca_state_or_province_name: ""
-certificate_authority_intermediate_ca_state: ""
 certificate_authority_intermediate_ca_subject_alternative_names: []
 certificate_authority_intermediate_ca_not_after: "+1825d"
 certificate_authority_intermediate_ca_not_before: "+0s"
@@ -90,12 +86,11 @@ certificate_authority_client_create: true
 
 ## @param certificate_authority_client_path Directory where the private and public TLS key of the client certificate authority should be stored.
 ## @param certificate_authority_client_common_name Common Name (CN) of the client certificate.
-## @param certificate_authority_client_country_name Country Name (CN) of the client certificate.
+## @param certificate_authority_client_country_name Country Name (CN) of the client certificate. For example `US`, `FR` or `DE`.
 ## @param certificate_authority_client_email_address E-Mail Address of the client certificate owner.
 ## @param certificate_authority_client_organization_name Organization name of the client certificate owner.
 ## @param certificate_authority_client_organizational_unit_name Common Name (CN) of the client certificate.
 ## @param certificate_authority_client_state_or_province_name State or province name where the owner of the client certificate is located.
-## @param certificate_authority_client_state State where the owner of the client certificate is located.
 ## @param certificate_authority_client_subject_alternative_names Subject Alternative Names (SAN) of the client certificate.
 ## @param certificate_authority_client_not_after Time in the future from now when the TLS certificate should expire
 ## @param certificate_authority_client_not_before Time in the past from now when the TLS certificate should be valid.
@@ -106,7 +101,6 @@ certificate_authority_client_email_address: ""
 certificate_authority_client_organization_name: ""
 certificate_authority_client_organizational_unit_name: ""
 certificate_authority_client_state_or_province_name: ""
-certificate_authority_client_state: ""
 certificate_authority_client_subject_alternative_names: []
 certificate_authority_client_not_after: "+397d"
 certificate_authority_client_not_before: "+0s"
