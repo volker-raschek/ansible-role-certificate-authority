@@ -10,8 +10,14 @@
     basic_constraints:
     - "CA:TRUE"
     common_name: "{{ certificate_authority_root_ca_common_name }}"
+    countryName: "{{ certificate_authority_root_ca_country_name }}"
+    email_address: "{{ certificate_authority_root_ca_email_address }}"
+    organization_name: "{{ certificate_authority_root_ca_organization_name }}"
+    organizational_unit_name: "{{ certificate_authority_root_ca_organizational_unit_name }}"
     path: "{{ certificate_authority_root_ca_path }}/cert-req.pem"
     privatekey_path: "{{ certificate_authority_root_ca_path }}/privkey.pem"
+    state_or_province_name: "{{ certificate_authority_root_ca_state_or_province_name }}"
+    state: "{{ certificate_authority_root_ca_state }}"
     use_common_name_for_san: false
 
 - name: Create self-signed certificate for root CA

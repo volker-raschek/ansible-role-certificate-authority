@@ -8,11 +8,18 @@
 - name: Create a certificate signing request (CSR) for client certificate without subject alternative names (SANs)
   community.crypto.openssl_csr:
     common_name: "{{ certificate_authority_client_common_name }}"
+    countryName: "{{ certificate_authority_client_country_name }}"
+    email_address: "{{ certificate_authority_client_email_address }}"
     extendedKeyUsage:
     - clientAuth
     - serverAuth
+    organization_name: "{{ certificate_authority_client_organization_name }}"
+    organizational_unit_name: "{{ certificate_authority_client_organizational_unit_name }}"
     path: "{{ certificate_authority_client_path }}/cert-req.pem"
+    privatekey_passphrase: "{{ certificate_authority_client_tls_key_passphrase }}"
     privatekey_path: "{{ certificate_authority_client_path }}/privkey.pem"
+    state_or_province_name: "{{ certificate_authority_client_state_or_province_name }}"
+    state: "{{ certificate_authority_client_state }}"
   when: |
     certificate_authority_client_subject_alternative_names is not defined or
     (certificate_authority_client_subject_alternative_names is defined and
@@ -21,11 +28,17 @@
 - name: Create a certificate signing request (CSR) for client certificate with subject alternative names (SANs)
   community.crypto.openssl_csr:
     common_name: "{{ certificate_authority_client_common_name }}"
+    countryName: "{{ certificate_authority_client_country_name }}"
+    email_address: "{{ certificate_authority_client_email_address }}"
     extendedKeyUsage:
     - clientAuth
     - serverAuth
+    organization_name: "{{ certificate_authority_client_organization_name }}"
+    organizational_unit_name: "{{ certificate_authority_client_organizational_unit_name }}"
     path: "{{ certificate_authority_client_path }}/cert-req.pem"
     privatekey_path: "{{ certificate_authority_client_path }}/privkey.pem"
+    state_or_province_name: "{{ certificate_authority_client_state_or_province_name }}"
+    state: "{{ certificate_authority_client_state }}"
     subject_alt_name: "{{ certificate_authority_client_subject_alternative_names | map('regex_replace', '^', 'DNS:') | list | join(',') | quote }}"
   when: certificate_authority_client_subject_alternative_names is defined and
         certificate_authority_client_subject_alternative_names | length > 0
