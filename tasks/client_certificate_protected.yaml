@@ -5,6 +5,7 @@
     path: "{{ certificate_authority_client_path }}/privkey.pem"
     type: "{{ certificate_authority_client_tls_key_type }}"
     passphrase: "{{ certificate_authority_client_tls_key_passphrase }}"
+    cipher: auto
 
 - name: Create a certificate signing request (CSR) for client certificate without subject alternative names (SANs)
   community.crypto.openssl_csr:

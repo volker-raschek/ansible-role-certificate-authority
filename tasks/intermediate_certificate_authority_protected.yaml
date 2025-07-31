@@ -5,6 +5,7 @@
     passphrase: "{{ certificate_authority_intermediate_ca_tls_key_passphrase }}"
     path: "{{ certificate_authority_intermediate_ca_path }}/privkey.pem"
     type: "{{ certificate_authority_intermediate_ca_tls_key_type }}"
+    cipher: auto
 
 - name: Create a certificate signing request (CSR) for intermediate CA
   community.crypto.openssl_csr:
