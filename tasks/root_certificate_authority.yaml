@@ -16,7 +16,7 @@
         certificate_authority_root_ca_tls_key_passphrase | length <= 0
 
 - name: Create passphrase protected root Certificate Authority (CA)
-  ansible.builtin.include_tasks: root_certificate_authority_unprotected.yaml
+  ansible.builtin.include_tasks: root_certificate_authority_protected.yaml
   when: certificate_authority_root_ca_create is defined and
         certificate_authority_root_ca_create and
         certificate_authority_root_ca_tls_key_passphrase is defined and
