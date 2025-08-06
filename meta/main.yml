@@ -17,7 +17,6 @@ galaxy_info:
     versions:
     - "35"
   galaxy_tags:
-  - certificate-authority
   - ca
   - ssl
   - tls
