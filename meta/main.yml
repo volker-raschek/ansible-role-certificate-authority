@@ -1,5 +1,4 @@
 galaxy_info:
-  namespace: volker_raschek
   role_name: "certificate_authority"
   author: "Markus Pesch"
   description: "Role to create and managed an existing PKI infrastructure"
