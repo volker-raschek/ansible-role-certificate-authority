@@ -49,7 +49,7 @@ argument_specs:
         type: str
         default: ""
       certificate_authority_root_ca_subject_alternative_names:
-        description: "Subject Alternative Names (SAN) of the root certificate authority."
+        description: "Subject Alternative Names (SAN) of the root certificate authority. Each entry must be prefixed by its type, for example DNS:example.local or IP:10.11.12.13."
         type: list
         elements: str
         default: []
@@ -121,7 +121,7 @@ argument_specs:
         type: str
         default: ""
       certificate_authority_intermediate_ca_subject_alternative_names:
-        description: "Subject Alternative Names (SAN) of the intermediate certificate authority."
+        description: "Subject Alternative Names (SAN) of the intermediate certificate authority. Each entry must be prefixed by its type, for example DNS:example.local or IP:10.11.12.13."
         type: list
         elements: str
         default: []
@@ -193,7 +193,7 @@ argument_specs:
         type: str
         default: ""
       certificate_authority_client_subject_alternative_names:
-        description: "Subject Alternative Names (SAN) of the client certificate."
+        description: "Subject Alternative Names (SAN) of the client certificate. Each entry must be prefixed by its type, for example DNS:example.local or IP:10.11.12.13."
         type: list
         elements: str
         default: []
