@@ -12,7 +12,7 @@
 - name: Import certificate of a client
   ansible.builtin.copy:
     content: "{{ certificate_authority_client_tls_crt_content }}"
-    dest: "{{ certificate_authority_client_tls_crt_content }}/cert.pem"
+    dest: "{{ certificate_authority_client_path }}/cert.pem"
     owner: "root"
     group: "root"
     mode: "0644"
