@@ -1,10 +1,5 @@
 ---
 
-- name: Upgrade python package manager pip
-  ansible.builtin.pip:
-    name: pip
-    state: present
-
 - name: Install required python library cryptography
   ansible.builtin.pip:
     name: cryptography>=1.2.3
