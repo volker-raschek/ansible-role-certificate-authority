@@ -1,0 +1,4 @@
+---
+
+certificate_authority_python_packages:
+- python-cryptography

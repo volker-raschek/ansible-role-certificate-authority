@@ -1,8 +1,21 @@
 ---
 
-- name: Install required python library cryptography
-  ansible.builtin.pip:
-    name: cryptography>=1.2.3
+- name: Include OS-specific variables
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+      - "{{ ansible_facts['distribution'] }}_{{ ansible_facts['architecture'] }}.yaml"
+      - "{{ ansible_facts['distribution'] }}.yaml"
+      - "{{ ansible_facts['os_family'] }}_{{ ansible_facts['architecture'] }}.yaml"
+      - "{{ ansible_facts['os_family'] }}.yaml"
+      - main.yaml
+      paths:
+      - vars
+
+- name: Install required python libraries
+  ansible.builtin.package:
+    name: "{{ certificate_authority_python_packages }}"
     state: present
 
 - name: Create or import a root Certificate Authority (CA)

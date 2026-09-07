@@ -1,0 +1,6 @@
+---
+
+# Fallback for distributions without a dedicated vars file. Overridden by the
+# os-specific file included in tasks/main.yaml.
+certificate_authority_python_packages:
+- python3-cryptography
