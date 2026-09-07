@@ -1,0 +1,7 @@
+---
+
+certificate_authority_python_packages:
+- python3-cryptography
+
+certificate_authority_trust_store_anchor: "/etc/pki/ca-trust/source/anchors/{{ certificate_authority_root_ca_common_name | replace(' ', '_') }}.pem"
+certificate_authority_trust_store_update_command: "/usr/bin/update-ca-trust"

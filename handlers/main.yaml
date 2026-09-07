@@ -1,0 +1,8 @@
+---
+
+- name: Update systems SSL/TLS trust store
+  ansible.builtin.command:
+    cmd: "{{ certificate_authority_trust_store_update_command }}"
+  changed_when: true
+  when: certificate_authority_root_ca_import is defined and
+        certificate_authority_root_ca_import

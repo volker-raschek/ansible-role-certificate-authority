@@ -47,29 +47,12 @@
     _concat_mode: "0600"
 
 - name: Import certificate of root Certificate Authority (CA) into systems trust store
-  vars:
-    # Debian based distributions only consider anchors with the file extension crt.
-    _trust_store_anchor:
-      Archlinux: "/etc/ca-certificates/trust-source/anchors/{{ certificate_authority_root_ca_common_name | replace(' ', '_') }}.pem"
-      Debian: "/usr/local/share/ca-certificates/{{ certificate_authority_root_ca_common_name | replace(' ', '_') }}.crt"
-      RedHat: "/etc/pki/ca-trust/source/anchors/{{ certificate_authority_root_ca_common_name | replace(' ', '_') }}.pem"
-    _trust_store_update_command:
-      Archlinux: "/usr/bin/update-ca-trust"
-      Debian: "/usr/sbin/update-ca-certificates"
-      RedHat: "/usr/bin/update-ca-trust"
+  ansible.builtin.file:
+    src: "{{ certificate_authority_root_ca_path }}/cert.pem"
+    dest: "{{ certificate_authority_trust_store_anchor }}"
+    owner: root
+    group: root
+    state: link
+  notify: Update systems SSL/TLS trust store
   when: certificate_authority_root_ca_import is defined and
         certificate_authority_root_ca_import
-  block:
-  - name: Create symolic link
-    ansible.builtin.file:
-      src: "{{ certificate_authority_root_ca_path }}/cert.pem"
-      dest: "{{ _trust_store_anchor[ansible_facts['os_family']] }}"
-      owner: root
-      group: root
-      state: link
-  - name: Update systems SSL/TLS trust store
-    ansible.builtin.command:
-      cmd: "{{ _trust_store_update_command[ansible_facts['os_family']] }}"
-    register: _update_ca_trust
-    changed_when: _update_ca_trust.rc == 0
-    failed_when: _update_ca_trust.rc > 0

@@ -16,4 +16,5 @@
     owner: "root"
     group: "root"
     mode: "0644"
+  notify: Update systems SSL/TLS trust store
   when: certificate_authority_root_ca_tls_crt_content | length > 0

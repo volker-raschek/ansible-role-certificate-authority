@@ -1,0 +1,8 @@
+---
+
+certificate_authority_python_packages:
+- python3-cryptography
+
+# Debian based distributions only consider anchors with the file extension crt.
+certificate_authority_trust_store_anchor: "/usr/local/share/ca-certificates/{{ certificate_authority_root_ca_common_name | replace(' ', '_') }}.crt"
+certificate_authority_trust_store_update_command: "/usr/sbin/update-ca-certificates"

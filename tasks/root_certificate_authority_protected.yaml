@@ -33,3 +33,4 @@
     provider: selfsigned
     selfsigned_not_after: "{{ certificate_authority_root_ca_not_after }}"
     selfsigned_not_before: "{{ certificate_authority_root_ca_not_before }}"
+  notify: Update systems SSL/TLS trust store
