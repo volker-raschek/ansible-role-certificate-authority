@@ -8,6 +8,23 @@
     mode: "0700"
     state: directory
 
+- name: Verify that the signing intermediate Certificate Authority (CA) is available
+  when: certificate_authority_client_create is defined and
+        certificate_authority_client_create
+  block:
+  - name: Check private key of the intermediate Certificate Authority (CA)
+    ansible.builtin.stat:
+      path: "{{ certificate_authority_intermediate_ca_path }}/privkey.pem"
+    register: _intermediate_ca_privkey
+  - name: Assert that the private key of the intermediate Certificate Authority (CA) exists
+    ansible.builtin.assert:
+      that: _intermediate_ca_privkey.stat.exists
+      fail_msg: >-
+        Signing the client certificate requires
+        {{ certificate_authority_intermediate_ca_path }}/privkey.pem. Either unset
+        certificate_authority_intermediate_ca_skip so the intermediate certificate authority is
+        created or imported, or point certificate_authority_intermediate_ca_path to an existing one.
+
 - name: Create unprotected client certificate
   ansible.builtin.include_tasks: client_certificate_unprotected.yaml
   when: certificate_authority_client_create is defined and

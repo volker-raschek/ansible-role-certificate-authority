@@ -8,6 +8,23 @@
     mode: "0700"
     state: "directory"
 
+- name: Verify that the signing root Certificate Authority (CA) is available
+  when: certificate_authority_intermediate_ca_create is defined and
+        certificate_authority_intermediate_ca_create
+  block:
+  - name: Check private key of the root Certificate Authority (CA)
+    ansible.builtin.stat:
+      path: "{{ certificate_authority_root_ca_path }}/privkey.pem"
+    register: _root_ca_privkey
+  - name: Assert that the private key of the root Certificate Authority (CA) exists
+    ansible.builtin.assert:
+      that: _root_ca_privkey.stat.exists
+      fail_msg: >-
+        Signing the intermediate certificate authority requires
+        {{ certificate_authority_root_ca_path }}/privkey.pem. Either unset
+        certificate_authority_root_ca_skip so the root certificate authority is created or
+        imported, or point certificate_authority_root_ca_path to an existing one.
+
 - name: Create unprotected intermediate Certificate Authority (CA)
   ansible.builtin.include_tasks: intermediate_certificate_authority_unprotected.yaml
   when: certificate_authority_intermediate_ca_create is defined and
