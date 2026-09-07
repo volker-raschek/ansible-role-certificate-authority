@@ -5,7 +5,7 @@
     path: "{{ certificate_authority_intermediate_ca_path }}"
     owner: "root"
     group: "root"
-    mode: "0700"
+    mode: "0755"
     state: "directory"
 
 - name: Verify that the signing root Certificate Authority (CA) is available

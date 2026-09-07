@@ -4,6 +4,7 @@
   community.crypto.openssl_privatekey:
     passphrase: "{{ certificate_authority_root_ca_tls_key_passphrase }}"
     path: "{{ certificate_authority_root_ca_path }}/privkey.pem"
+    mode: "0600"
     type: "{{ certificate_authority_root_ca_tls_key_type }}"
     cipher: auto
 

@@ -3,6 +3,7 @@
 - name: Create private key for client
   community.crypto.openssl_privatekey:
     path: "{{ certificate_authority_client_path }}/privkey.pem"
+    mode: "0600"
     type: "{{ certificate_authority_client_tls_key_type }}"
     passphrase: "{{ certificate_authority_client_tls_key_passphrase }}"
     cipher: auto

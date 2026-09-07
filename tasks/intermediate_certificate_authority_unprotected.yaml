@@ -3,6 +3,7 @@
 - name: Create private key for intermediate CA
   community.crypto.openssl_privatekey:
     path: "{{ certificate_authority_intermediate_ca_path }}/privkey.pem"
+    mode: "0600"
     type: "{{ certificate_authority_intermediate_ca_tls_key_type }}"
 
 - name: Create a certificate signing request (CSR) for intermediate CA
