@@ -16,7 +16,7 @@
         certificate_authority_client_tls_key_passphrase | length <= 0
 
 - name: Create passphrase protected client certificate
-  ansible.builtin.include_tasks: client_certificate_unprotected.yaml
+  ansible.builtin.include_tasks: client_certificate_protected.yaml
   when: certificate_authority_client_create is defined and
         certificate_authority_client_create and
         certificate_authority_client_tls_key_passphrase is defined and
