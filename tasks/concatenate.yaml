@@ -1,0 +1,24 @@
+---
+
+# awk 1 prints every line and thereby normalizes source files whose last line lacks a newline.
+- name: Check the source files of {{ _concat_dest }}
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  register: _concat_stat
+  loop: "{{ _concat_sources }}"
+
+- name: Read the source files of {{ _concat_dest }}
+  ansible.builtin.command:
+    cmd: "awk 1 {{ _concat_sources | join(' ') }}"
+  register: _concat_content
+  changed_when: false
+  when: _concat_stat.results | rejectattr('stat.exists') | list | length == 0
+
+- name: Write {{ _concat_dest }}
+  ansible.builtin.copy:
+    content: "{{ _concat_content.stdout }}\n"
+    dest: "{{ _concat_dest }}"
+    owner: "root"
+    group: "root"
+    mode: "{{ _concat_mode }}"
+  when: _concat_content is not skipped
