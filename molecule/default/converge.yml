@@ -1,0 +1,19 @@
+---
+
+- name: Converge
+  hosts: all
+  # Passphrases are fixtures, they exercise the protected code paths of the role.
+  vars:
+    certificate_authority_root_ca_common_name: "Molecule Root CA"
+    certificate_authority_root_ca_tls_key_passphrase: "molecule-root-ca"
+    certificate_authority_intermediate_ca_common_name: "Molecule Intermediate CA"
+    certificate_authority_intermediate_ca_tls_key_passphrase: "molecule-intermediate-ca"
+    certificate_authority_client_skip: false
+    certificate_authority_client_common_name: "molecule.example.local"
+    certificate_authority_client_subject_alternative_names:
+    - "DNS:molecule.example.local"
+    - "IP:10.11.12.13"
+  tasks:
+  - name: Include the role certificate_authority
+    ansible.builtin.include_role:
+      name: certificate_authority

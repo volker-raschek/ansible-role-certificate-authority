@@ -1,0 +1,25 @@
+---
+
+- name: Create
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Start a container per platform
+    containers.podman.podman_container:
+      name: "{{ item.name }}"
+      image: "{{ item.image }}"
+      command: "sleep infinity"
+      state: started
+    loop: "{{ molecule_yml.platforms }}"
+    loop_control:
+      label: "{{ item.name }}"
+
+  - name: Write the instance config
+    ansible.builtin.copy:
+      content: |
+        {% for platform in molecule_yml.platforms %}
+        - instance: {{ platform.name }}
+          connection: containers.podman.podman
+        {% endfor %}
+      dest: "{{ molecule_instance_config }}"
+      mode: "0600"

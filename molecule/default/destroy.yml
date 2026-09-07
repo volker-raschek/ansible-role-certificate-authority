@@ -1,0 +1,19 @@
+---
+
+- name: Destroy
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Remove the container of every platform
+    containers.podman.podman_container:
+      name: "{{ item.name }}"
+      state: absent
+    loop: "{{ molecule_yml.platforms }}"
+    loop_control:
+      label: "{{ item.name }}"
+
+  - name: Empty the instance config
+    ansible.builtin.copy:
+      content: "[]"
+      dest: "{{ molecule_instance_config }}"
+      mode: "0600"

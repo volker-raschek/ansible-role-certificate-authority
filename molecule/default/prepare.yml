@@ -1,0 +1,22 @@
+---
+
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  vars:
+    # The base images ship neither a python interpreter for ansible nor the tools the role shells out to.
+    _bootstrap: |
+      set -eu
+      if command -v pacman > /dev/null; then
+        pacman --sync --refresh --noconfirm ca-certificates gawk openssl python
+      elif command -v apt-get > /dev/null; then
+        apt-get update
+        apt-get install --yes ca-certificates gawk openssl python3
+      else
+        dnf install --assumeyes ca-certificates gawk openssl python3
+      fi
+  tasks:
+  # The podman connection plugin splits raw commands instead of passing them to a shell.
+  - name: Bootstrap the python interpreter and the tools required by the role
+    ansible.builtin.raw: "/bin/sh -c {{ _bootstrap | quote }}"
+    changed_when: true

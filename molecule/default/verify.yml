@@ -1,0 +1,88 @@
+---
+
+- name: Verify
+  hosts: all
+  vars:
+    _root_ca_path: "/etc/ansible-playbook/pki/ca"
+    _intermediate_ca_path: "/etc/ansible-playbook/pki/intermediate"
+    _client_path: "/etc/ansible-playbook/pki/client"
+    # cert.pem and cert-req.pem are left out on purpose, the role does not pin their mode.
+    _expected_modes:
+      /etc/ansible-playbook/pki/ca: "0755"
+      /etc/ansible-playbook/pki/ca/privkey.pem: "0600"
+      /etc/ansible-playbook/pki/ca/all.pem: "0600"
+      /etc/ansible-playbook/pki/intermediate: "0755"
+      /etc/ansible-playbook/pki/intermediate/privkey.pem: "0600"
+      /etc/ansible-playbook/pki/intermediate/chain.pem: "0644"
+      /etc/ansible-playbook/pki/intermediate/fullchain.pem: "0644"
+      /etc/ansible-playbook/pki/intermediate/all.pem: "0600"
+      /etc/ansible-playbook/pki/client: "0755"
+      /etc/ansible-playbook/pki/client/privkey.pem: "0600"
+      /etc/ansible-playbook/pki/client/chain.pem: "0644"
+      /etc/ansible-playbook/pki/client/fullchain.pem: "0644"
+      /etc/ansible-playbook/pki/client/all.pem: "0600"
+    _trust_store_anchor:
+      Archlinux: "/etc/ca-certificates/trust-source/anchors/Molecule_Root_CA.pem"
+      Debian: "/usr/local/share/ca-certificates/Molecule_Root_CA.crt"
+      RedHat: "/etc/pki/ca-trust/source/anchors/Molecule_Root_CA.pem"
+  tasks:
+  - name: Stat the generated files
+    ansible.builtin.stat:
+      path: "{{ item.key }}"
+    register: _pki_files
+    loop: "{{ _expected_modes | dict2items }}"
+    loop_control:
+      label: "{{ item.key }}"
+
+  - name: Assert that the generated files exist with the expected mode
+    ansible.builtin.assert:
+      that:
+      - item.stat.exists
+      - item.stat.mode == item.item.value
+      fail_msg: "{{ item.item.key }} has mode {{ item.stat.mode | default('none') }} instead of {{ item.item.value }}"
+    loop: "{{ _pki_files.results }}"
+    loop_control:
+      label: "{{ item.item.key }}"
+
+  - name: Verify the client certificate against the root certificate authority
+    ansible.builtin.command:
+      cmd: >-
+        openssl verify
+        -CAfile {{ _root_ca_path }}/cert.pem
+        -untrusted {{ _intermediate_ca_path }}/cert.pem
+        {{ _client_path }}/cert.pem
+    changed_when: false
+
+  - name: Read the fullchain file of the client
+    ansible.builtin.slurp:
+      src: "{{ _client_path }}/fullchain.pem"
+    register: _client_fullchain
+
+  - name: Assert that the fullchain of the client holds the complete chain and ends with a newline
+    vars:
+      _content: "{{ _client_fullchain.content | b64decode }}"
+    ansible.builtin.assert:
+      that:
+      - _content | regex_findall('BEGIN CERTIFICATE') | length == 3
+      - _content.endswith('\n')
+      fail_msg: "unexpected content in {{ _client_path }}/fullchain.pem"
+
+  - name: Read the subject alternative names of the client certificate
+    community.crypto.x509_certificate_info:
+      path: "{{ _client_path }}/cert.pem"
+    register: _client_cert_info
+
+  - name: Assert that the requested subject alternative names are present
+    ansible.builtin.assert:
+      that: _client_cert_info.subject_alt_name | sort == ['DNS:molecule.example.local', 'IP:10.11.12.13']
+      fail_msg: "unexpected subject alternative names {{ _client_cert_info.subject_alt_name }}"
+
+  - name: Stat the anchor in the systems trust store
+    ansible.builtin.stat:
+      path: "{{ _trust_store_anchor[ansible_facts['os_family']] }}"
+    register: _anchor
+
+  - name: Assert that the root certificate authority was imported into the systems trust store
+    ansible.builtin.assert:
+      that: _anchor.stat.exists
+      fail_msg: "{{ _trust_store_anchor[ansible_facts['os_family']] }} is missing"
