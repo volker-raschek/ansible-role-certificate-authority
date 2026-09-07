@@ -3,7 +3,7 @@
 - name: Import private key of a client
   ansible.builtin.copy:
     content: "{{ certificate_authority_client_tls_key_content }}"
-    dest: "{{ certificate_authority_client_ca_path }}/privkey.pem"
+    dest: "{{ certificate_authority_client_path }}/privkey.pem"
     owner: "root"
     group: "root"
     mode: "0600"
