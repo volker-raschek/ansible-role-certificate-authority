@@ -25,12 +25,11 @@ container per supported distribution family, applies the role, asserts that a se
 verifies the issued certificates with `openssl verify`, their file permissions and the anchor in the systems trust
 store.
 
-Molecule ships only its `default` driver, therefore `podman` and the collection `containers.podman` are required
-besides molecule itself.
+Molecule ships only its `default` driver, therefore `podman` is required besides molecule itself. The collections are
+declared in `molecule/default/collections.yml` and installed by molecule.
 
 ```bash
 pip install molecule
-ansible-galaxy collection install community.crypto containers.podman
 ```
 
 The complete sequence creates the containers, tests them and removes them afterwards.
