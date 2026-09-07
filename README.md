@@ -4,6 +4,19 @@ This Ansible role can be used to create a root and intermediate certificate auth
 them. Additionally offers the ansible role the feature to import the certificates of the authority into the systems
 trust store.
 
+## Requirements
+
+The role relies on the modules of the collection `community.crypto`.
+
+```bash
+ansible-galaxy collection install -r requirements.yaml
+```
+
+Facts must be gathered, because the names of the required python packages, the location of the trust store anchor and
+the command to update the trust store are looked up by `ansible_facts['distribution']`, `ansible_facts['os_family']`
+and `ansible_facts['architecture']`. Archlinux, Debian and RedHat based distributions are supported. Furthermore the
+role writes into `/etc` and updates the systems trust store, so it has to be executed with `become: true`.
+
 ## Examples
 
 The following minimal example creates a root and intermediate certificate authority and issues a client certificate from
