@@ -61,7 +61,6 @@
       owner: "root"
       group: "root"
       mode: "0600"
-      remote_src: true
     when: _stat_result.stat.exists is defined and
           _stat_result.stat.exists
 
