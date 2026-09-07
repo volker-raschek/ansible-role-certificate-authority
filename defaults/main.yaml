@@ -10,7 +10,7 @@ certificate_authority_root_ca_import: true
 
 ## @param certificate_authority_root_ca_path Directory where the private and public TLS key of the root certificate authority should be stored.
 ## @param certificate_authority_root_ca_common_name Common Name (CN) of the root certificate authority.
-## @param certificate_authority_root_ca_country_name Common Name (CN) of the root certificate authority. For example `US`, `FR` or `DE`.
+## @param certificate_authority_root_ca_country_name Country name of the root certificate authority. For example `US`, `FR` or `DE`.
 ## @param certificate_authority_root_ca_email_address E-Mail Address of the root certificate authority owner.
 ## @param certificate_authority_root_ca_organization_name Organization name of the root certificate authority owner.
 ## @param certificate_authority_root_ca_organizational_unit_name Organizational unit name of the root certificate authority.
@@ -86,10 +86,10 @@ certificate_authority_client_create: true
 
 ## @param certificate_authority_client_path Directory where the private and public TLS key of the client certificate authority should be stored.
 ## @param certificate_authority_client_common_name Common Name (CN) of the client certificate.
-## @param certificate_authority_client_country_name Country Name (CN) of the client certificate. For example `US`, `FR` or `DE`.
+## @param certificate_authority_client_country_name Country name of the client certificate. For example `US`, `FR` or `DE`.
 ## @param certificate_authority_client_email_address E-Mail Address of the client certificate owner.
 ## @param certificate_authority_client_organization_name Organization name of the client certificate owner.
-## @param certificate_authority_client_organizational_unit_name Common Name (CN) of the client certificate.
+## @param certificate_authority_client_organizational_unit_name Organizational unit name of the client certificate.
 ## @param certificate_authority_client_state_or_province_name State or province name where the owner of the client certificate is located.
 ## @param certificate_authority_client_subject_alternative_names Subject Alternative Names (SAN) of the client certificate. Example: `DNS:example.local`, `IP:10.11.12.13`.
 ## @param certificate_authority_client_not_after Time in the future from now when the TLS certificate should expire
@@ -110,7 +110,7 @@ certificate_authority_client_not_before: "+0s"
 certificate_authority_client_tls_key_passphrase: ""
 certificate_authority_client_tls_key_type: "RSA"
 
-## @param certificate_authority_client_tls_crt_content Passphrase for the private key of the generated or imported client certificate.
-## @param certificate_authority_client_tls_key_content Algorithm of the private key of the client certificate
+## @param certificate_authority_client_tls_crt_content Content of a custom used client certificate. Will only be imported, when `certificate_authority_client_create: false`.
+## @param certificate_authority_client_tls_key_content Content of the private key of a custom used client certificate. Will only be imported, when `certificate_authority_client_create: false`.
 certificate_authority_client_tls_crt_content: ""
 certificate_authority_client_tls_key_content: ""

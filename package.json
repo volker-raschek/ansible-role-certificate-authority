@@ -1,6 +1,6 @@
 {
   "name": "certificate-authority-ansible-role",
-  "homepage": "https://git.cryptic.systems/volker.raschel/certificate-authority-ansible-role.git",
+  "homepage": "https://git.cryptic.systems/volker.raschek/certificate-authority-ansible-role.git",
   "license": "MIT",
   "private": true,
   "engineStrict": true,

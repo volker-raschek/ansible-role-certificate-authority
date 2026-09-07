@@ -29,7 +29,7 @@ argument_specs:
         type: str
         default: "Ansible Root CA"
       certificate_authority_root_ca_country_name:
-        description: "Common Name (CN) of the root certificate authority. For example US, FR or DE."
+        description: "Country name of the root certificate authority. For example US, FR or DE."
         type: str
         default: ""
       certificate_authority_root_ca_email_address:
@@ -173,7 +173,7 @@ argument_specs:
         type: str
         default: "Ansible Client Certificate"
       certificate_authority_client_country_name:
-        description: "Country Name (CN) of the client certificate. For example US, FR or DE."
+        description: "Country name of the client certificate. For example US, FR or DE."
         type: str
         default: ""
       certificate_authority_client_email_address:
@@ -185,7 +185,7 @@ argument_specs:
         type: str
         default: ""
       certificate_authority_client_organizational_unit_name:
-        description: "Common Name (CN) of the client certificate."
+        description: "Organizational unit name of the client certificate."
         type: str
         default: ""
       certificate_authority_client_state_or_province_name:
@@ -219,10 +219,10 @@ argument_specs:
         - DSA
         - ECC
       certificate_authority_client_tls_crt_content:
-        description: "Passphrase for the private key of the generated or imported client certificate."
+        description: "Content of a custom used client certificate. Will only be imported, when certificate_authority_client_create: false."
         type: str
         default: ""
       certificate_authority_client_tls_key_content:
-        description: "Algorithm of the private key of the client certificate"
+        description: "Content of the private key of a custom used client certificate. Will only be imported, when certificate_authority_client_create: false."
         type: str
         default: ""
