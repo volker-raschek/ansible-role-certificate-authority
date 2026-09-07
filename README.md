@@ -18,6 +18,43 @@ certificate_authority_client_subject_alternative_names:
 - "IP:10.11.12.13"
 ```
 
+## Tests
+
+The role is tested with [Molecule](https://ansible.readthedocs.io/projects/molecule/). The scenario starts one podman
+container per supported distribution family, applies the role, asserts that a second run reports no change and finally
+verifies the issued certificates with `openssl verify`, their file permissions and the anchor in the systems trust
+store.
+
+Molecule ships only its `default` driver, therefore `podman` and the collection `containers.podman` are required
+besides molecule itself.
+
+```bash
+pip install molecule
+ansible-galaxy collection install community.crypto containers.podman
+```
+
+The complete sequence creates the containers, tests them and removes them afterwards.
+
+```bash
+molecule test
+```
+
+While working on the role the containers are better kept alive.
+
+```bash
+# create the containers and apply the role
+molecule converge
+
+# run the assertions of molecule/default/verify.yml against the running containers
+molecule verify
+
+# open a shell in one of the containers
+molecule login --host certificate-authority-debian
+
+# remove the containers
+molecule destroy
+```
+
 ## Parameters
 
 ### Root Certificate Authority (CA)
