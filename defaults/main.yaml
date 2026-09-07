@@ -15,7 +15,7 @@ certificate_authority_root_ca_import: true
 ## @param certificate_authority_root_ca_organization_name Organization name of the root certificate authority owner.
 ## @param certificate_authority_root_ca_organizational_unit_name Organizational unit name of the root certificate authority.
 ## @param certificate_authority_root_ca_state_or_province_name State or province name where the owner of the root certificate authority is located.
-## @param certificate_authority_root_ca_subject_alternative_names Subject Alternative Names (SAN) of the root certificate authority. Each entry must be prefixed by its type, for example `DNS:example.local` or `IP:10.11.12.13`.
+## @param certificate_authority_root_ca_subject_alternative_names Subject Alternative Names (SAN) of the root certificate authority. Example: `DNS:example.local`, `IP:10.11.12.13`.
 ## @param certificate_authority_root_ca_not_after Time in the future from now when the TLS certificate should expire
 ## @param certificate_authority_root_ca_not_before Time in the past from now when the TLS certificate should be valid.
 certificate_authority_root_ca_path: "/etc/ansible-playbook/pki/ca"
@@ -53,7 +53,7 @@ certificate_authority_intermediate_ca_create: true
 ## @param certificate_authority_intermediate_ca_organization_name Organization name of the intermediate certificate authority owner.
 ## @param certificate_authority_intermediate_ca_organizational_unit_name Organizational unit name of the intermediate certificate authority.
 ## @param certificate_authority_intermediate_ca_state_or_province_name State or province name where the owner of the intermediate certificate authority is located.
-## @param certificate_authority_intermediate_ca_subject_alternative_names Subject Alternative Names (SAN) of the intermediate certificate authority. Each entry must be prefixed by its type, for example `DNS:example.local` or `IP:10.11.12.13`.
+## @param certificate_authority_intermediate_ca_subject_alternative_names Subject Alternative Names (SAN) of the intermediate certificate authority. Example: `DNS:example.local`, `IP:10.11.12.13`.
 ## @param certificate_authority_intermediate_ca_not_after Time in the future from now when the TLS certificate should expire
 ## @param certificate_authority_intermediate_ca_not_before Time in the past from now when the TLS certificate should be valid.
 certificate_authority_intermediate_ca_path: "/etc/ansible-playbook/pki/intermediate"
@@ -91,7 +91,7 @@ certificate_authority_client_create: true
 ## @param certificate_authority_client_organization_name Organization name of the client certificate owner.
 ## @param certificate_authority_client_organizational_unit_name Common Name (CN) of the client certificate.
 ## @param certificate_authority_client_state_or_province_name State or province name where the owner of the client certificate is located.
-## @param certificate_authority_client_subject_alternative_names Subject Alternative Names (SAN) of the client certificate. Each entry must be prefixed by its type, for example `DNS:example.local` or `IP:10.11.12.13`.
+## @param certificate_authority_client_subject_alternative_names Subject Alternative Names (SAN) of the client certificate. Example: `DNS:example.local`, `IP:10.11.12.13`.
 ## @param certificate_authority_client_not_after Time in the future from now when the TLS certificate should expire
 ## @param certificate_authority_client_not_before Time in the past from now when the TLS certificate should be valid.
 certificate_authority_client_path: "/etc/ansible-playbook/pki/client"
