@@ -16,7 +16,6 @@
     organization_name: "{{ certificate_authority_client_organization_name }}"
     organizational_unit_name: "{{ certificate_authority_client_organizational_unit_name }}"
     path: "{{ certificate_authority_client_path }}/cert-req.pem"
-    privatekey_passphrase: "{{ certificate_authority_client_tls_key_passphrase }}"
     privatekey_path: "{{ certificate_authority_client_path }}/privkey.pem"
     state_or_province_name: "{{ certificate_authority_client_state_or_province_name }}"
   when: |
