@@ -24,7 +24,7 @@ jobs:
       run: |
         apt update --yes
         apt install --yes python3-pip
-        pip3 install --break-system-packages molecule
+        pip3 install --break-system-packages molecule docker
     - name: Run molecule
       run: molecule test
       working-directory: certificate_authority

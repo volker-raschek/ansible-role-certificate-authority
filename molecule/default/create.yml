@@ -5,7 +5,7 @@
   gather_facts: false
   tasks:
   - name: Start a container per platform
-    containers.podman.podman_container:
+    community.docker.docker_container:
       name: "{{ item.name }}"
       image: "{{ item.image }}"
       command: "sleep infinity"
@@ -19,7 +19,7 @@
       content: |
         {% for platform in molecule_yml.platforms %}
         - instance: {{ platform.name }}
-          connection: containers.podman.podman
+          connection: community.docker.docker
         {% endfor %}
       dest: "{{ molecule_instance_config }}"
       mode: "0600"

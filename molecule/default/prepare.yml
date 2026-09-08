@@ -16,7 +16,7 @@
         dnf install --assumeyes ca-certificates gawk openssl python3
       fi
   tasks:
-  # The podman connection plugin splits raw commands instead of passing them to a shell.
+  # The raw command is wrapped explicitly, because the bootstrap relies on shell builtins.
   - name: Bootstrap the python interpreter and the tools required by the role
     ansible.builtin.raw: "/bin/sh -c {{ _bootstrap | quote }}"
     changed_when: true

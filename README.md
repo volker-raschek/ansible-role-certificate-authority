@@ -33,16 +33,16 @@ certificate_authority_client_subject_alternative_names:
 
 ## Tests
 
-The role is tested with [Molecule](https://ansible.readthedocs.io/projects/molecule/). The scenario starts one podman
+The role is tested with [Molecule](https://ansible.readthedocs.io/projects/molecule/). The scenario starts one docker
 container per supported distribution family, applies the role, asserts that a second run reports no change and finally
 verifies the issued certificates with `openssl verify`, their file permissions and the anchor in the systems trust
 store.
 
-Molecule ships only its `default` driver, therefore `podman` is required besides molecule itself. The collections are
+Molecule ships only its `default` driver, therefore `docker` is required besides molecule itself. The collections are
 declared in `molecule/default/collections.yml` and installed by molecule.
 
 ```bash
-pip install molecule
+pip install molecule docker
 ```
 
 The complete sequence creates the containers, tests them and removes them afterwards.

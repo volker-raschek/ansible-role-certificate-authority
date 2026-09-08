@@ -4,7 +4,7 @@ driver:
   name: default
   options:
     managed: true
-    login_cmd_template: "podman exec --interactive --tty {instance} bash"
+    login_cmd_template: "docker exec --interactive --tty {instance} bash"
 
 platforms:
 - name: certificate-authority-archlinux
