@@ -6,7 +6,8 @@ trust store.
 
 ## Requirements
 
-The role relies on the modules of the collection `community.crypto`.
+The role relies on the modules of the collection `community.crypto`. On Archlinux the collection `community.general`
+is additionally required, because it provides the `pacman` module.
 
 ```bash
 ansible-galaxy collection install -r requirements.yaml
