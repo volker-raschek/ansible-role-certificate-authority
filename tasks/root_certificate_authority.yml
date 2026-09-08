@@ -9,21 +9,21 @@
     state: "directory"
 
 - name: Create unprotected root Certificate Authority (CA)
-  ansible.builtin.include_tasks: root_certificate_authority_unprotected.yaml
+  ansible.builtin.include_tasks: root_certificate_authority_unprotected.yml
   when: certificate_authority_root_ca_create is defined and
         certificate_authority_root_ca_create and
         certificate_authority_root_ca_tls_key_passphrase is defined and
         certificate_authority_root_ca_tls_key_passphrase | length <= 0
 
 - name: Create passphrase protected root Certificate Authority (CA)
-  ansible.builtin.include_tasks: root_certificate_authority_protected.yaml
+  ansible.builtin.include_tasks: root_certificate_authority_protected.yml
   when: certificate_authority_root_ca_create is defined and
         certificate_authority_root_ca_create and
         certificate_authority_root_ca_tls_key_passphrase is defined and
         certificate_authority_root_ca_tls_key_passphrase | length > 0
 
 - name: Import protected root Certificate Authority (CA)
-  ansible.builtin.include_tasks: root_certificate_authority_import.yaml
+  ansible.builtin.include_tasks: root_certificate_authority_import.yml
   when: certificate_authority_root_ca_create is defined and
         not certificate_authority_root_ca_create
 
@@ -38,7 +38,7 @@
   - fullchain.pem
 
 - name: Create file with private key and fullchain file of root Certificate Authority (CA)
-  ansible.builtin.include_tasks: concatenate.yaml
+  ansible.builtin.include_tasks: concatenate.yml
   vars:
     _concat_sources:
     - "{{ certificate_authority_root_ca_path }}/privkey.pem"

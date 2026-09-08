@@ -26,26 +26,26 @@
         created or imported, or point certificate_authority_intermediate_ca_path to an existing one.
 
 - name: Create unprotected client certificate
-  ansible.builtin.include_tasks: client_certificate_unprotected.yaml
+  ansible.builtin.include_tasks: client_certificate_unprotected.yml
   when: certificate_authority_client_create is defined and
         certificate_authority_client_create and
         certificate_authority_client_tls_key_passphrase is defined and
         certificate_authority_client_tls_key_passphrase | length <= 0
 
 - name: Create passphrase protected client certificate
-  ansible.builtin.include_tasks: client_certificate_protected.yaml
+  ansible.builtin.include_tasks: client_certificate_protected.yml
   when: certificate_authority_client_create is defined and
         certificate_authority_client_create and
         certificate_authority_client_tls_key_passphrase is defined and
         certificate_authority_client_tls_key_passphrase | length > 0
 
 - name: Import client certificate
-  ansible.builtin.include_tasks: client_certificate_import.yaml
+  ansible.builtin.include_tasks: client_certificate_import.yml
   when: certificate_authority_client_create is defined and
         not certificate_authority_client_create
 
 - name: Create certificate chain file
-  ansible.builtin.include_tasks: concatenate.yaml
+  ansible.builtin.include_tasks: concatenate.yml
   vars:
     _concat_sources:
     - "{{ certificate_authority_client_path }}/cert.pem"
@@ -54,7 +54,7 @@
     _concat_mode: "0644"
 
 - name: Create certificate fullchain file
-  ansible.builtin.include_tasks: concatenate.yaml
+  ansible.builtin.include_tasks: concatenate.yml
   vars:
     _concat_sources:
     - "{{ certificate_authority_client_path }}/cert.pem"
@@ -63,7 +63,7 @@
     _concat_mode: "0644"
 
 - name: Create file with private key and fullchain file of the client
-  ansible.builtin.include_tasks: concatenate.yaml
+  ansible.builtin.include_tasks: concatenate.yml
   vars:
     _concat_sources:
     - "{{ certificate_authority_client_path }}/privkey.pem"

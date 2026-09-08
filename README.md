@@ -10,7 +10,7 @@ The role relies on the modules of the collection `community.crypto`. On Archlinu
 is additionally required, because it provides the `pacman` module.
 
 ```bash
-ansible-galaxy collection install -r requirements.yaml
+ansible-galaxy collection install -r requirements.yml
 ```
 
 Facts must be gathered, because the names of the required python packages, the location of the trust store anchor and
