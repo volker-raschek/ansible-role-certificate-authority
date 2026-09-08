@@ -13,7 +13,7 @@ permissions:
 jobs:
   molecule:
     name: Molecule
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-amd64
     steps:
     # The scenario includes the role by its name, so the directory must be named like the role and not like the
     # repository. Its parent is used as roles path.
